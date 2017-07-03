@@ -3,6 +3,7 @@
 # Write a method that returns the range of its argument (an array of integers).
 def range(arr)
   # your code goes here
+  arr.max - arr.min
 end
 
 # Write a method that returns a boolean indicating whether an array is in sorted
@@ -11,6 +12,7 @@ end
 # ["dog", "cat"] => false
 def in_order?(arr)
   # your code goes here
+  arr == arr.sort
 end
 
 
@@ -19,11 +21,13 @@ end
 # Write a method that returns the number of vowels in its argument
 def num_vowels(str)
   # your code goes here
+  str.downcase.count('aeiou')
 end
 
 # Write a method that returns its argument with all its vowels removed.
 def devowel(str)
   # your code goes here
+  str.delete('aeiouAEIOU')
 end
 
 
@@ -34,6 +38,7 @@ end
 # descending_digits(4291) #=> ["9", "4", "2", "1"]
 def descending_digits(int)
   # your code goes here
+  int.to_s.chars.sort.reverse
 end
 
 # Write a method that returns a boolean indicating whether a string has
@@ -41,18 +46,23 @@ end
 # repeating_letters?("Aa") => true
 def repeating_letters?(str)
   # your code goes here
+  str.downcase!
+  str.chars.uniq != str.chars
 end
 
 # Write a method that converts an array of ten integers into a phone number in
 # the format "(123) 456-7890".
 def to_phone_number(arr)
   # your code goes here
+  "(%d%d%d) %d%d%d-%d%d%d%d" % arr
 end
 
 # Write a method that returns the range of a string of comma-separated integers,
 # e.g., str_range("4,1,8") #=> 7
 def str_range(str)
   # your code goes here
+  ints = str.split(',').map(&:to_i)
+  ints.max - ints.min
 end
 
 
@@ -64,4 +74,6 @@ end
 # code, but the solution is tricky!
 def my_rotate(arr, offset=1)
   # your code goes here
+  offset = offset % arr.length
+  arr.drop(offset) + arr.take(offset)
 end
