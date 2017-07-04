@@ -94,28 +94,47 @@ end
 # Write a method that returns a new array containing all the elements of the
 # original array in reverse order.
 def my_reverse(arr)
-
+  reversed = []
+  arr.each do |el|
+    reversed.unshift(el)
+  end
+  reversed
 end
 
 # Write a method that returns a boolean indicating whether the argument is
 # prime.
 def prime?(num)
-
+  return false if num <= 1
+  (2..Math.sqrt(num)).each do |divisor|
+    return false if num % divisor == 0
+  end
+  true
 end
 
 # Write a method that returns a sorted array of the factors of its argument.
 def factors(num)
-
+  factors = []
+  sqrt = Math.sqrt(num)
+  (1..sqrt).each do |divisor|
+    if num % divisor == 0
+      if divisor == sqrt
+        factors << divisor
+      else
+        factors += [divisor, num / divisor]
+      end
+    end
+  end
+  factors.sort
 end
 
 # Write a method that returns a sorted array of the prime factors of its argument.
 def prime_factors(num)
-
+  factors(num).select{|factor| prime?(factor)}
 end
 
 # Write a method that returns the number of prime factors of its argument.
 def num_prime_factors(num)
-
+  prime_factors(num).length
 end
 
 
@@ -124,5 +143,14 @@ end
 # Return the one integer in an array that is even or odd while the rest are of
 # opposite parity, e.g. oddball([1,2,3]) => 2, oddball([2,4,5,6] => 5)
 def oddball(arr)
-
+  evens = []
+  odds = []
+  arr.each do |num|
+    if num.even?
+      evens << num
+    else
+      odds << num
+    end
+  end
+  evens.length == 1 ? evens.first : odds.first
 end
