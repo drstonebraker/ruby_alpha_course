@@ -45,21 +45,29 @@ def my_join(arr, separator = "")
   arr[0...-1].each do |el|
     result += el + separator
   end
-  result + arr.last
+  result + arr.last.to_s
 end
 
 # Write a method that converts its argument to weirdcase, where every odd
 # character is lowercase and every even is uppercase, e.g.
 # weirdcase("weirdcase") => "wEiRdCaSe"
 def weirdcase(str)
-
+  str.chars.map.with_index{|ch, idx| idx.odd? ? ch.upcase : ch.downcase}.join
 end
 
 # Reverse all words of five more more letters in a string. Return the resulting
 # string, e.g., reverse_five("Looks like my luck has reversed") => "skooL like
 # my luck has desrever")
 def reverse_five(str)
-
+  words = str.split
+  words.map! do |word|
+    if word.length >= 5
+      word.reverse
+    else
+      word
+    end
+  end
+  words.join(' ')
 end
 
 # Return an array of integers from 1 to n (inclusive), except for each multiple
@@ -67,7 +75,17 @@ end
 # integer with "buzz", and for each multiple of both 3 and 5, replace the
 # integer with "fizzbuzz".
 def fizzbuzz(n)
-
+  (1..n).to_a.map do |num|
+    if num % 5 == 0 && num % 3 == 0
+      'fizzbuzz'
+    elsif num % 3 == 0
+      'fizz'
+    elsif num % 5 == 0
+      'buzz'
+    else
+      num
+    end
+  end
 end
 
 
