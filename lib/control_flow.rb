@@ -32,7 +32,7 @@ end
 # of all whole numbers between 1 and the number itself. Assume the argument will
 # be > 0.
 def factorial(num)
-
+  (1..num).to_a.inject(:*)
 end
 
 
@@ -41,7 +41,11 @@ end
 # Write your own version of the join method. separator = "" ensures that the
 # default seperator is an empty string.
 def my_join(arr, separator = "")
-
+  result = ''
+  arr[0...-1].each do |el|
+    result += el + separator
+  end
+  result + arr.last
 end
 
 # Write a method that converts its argument to weirdcase, where every odd
