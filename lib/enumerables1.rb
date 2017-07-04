@@ -31,6 +31,13 @@ end
 # the actual retail price without going over that price. Assume there is always
 # at least one bid below the retail price.
 def price_is_right(bids, actual_retail_price)
+  bids.reduce do |acc, bid|
+    if bid <= actual_retail_price && bid > acc
+      bid
+    else
+      acc
+    end
+  end
 end
 
 # Given an array of numbers, return an array of those numbers that have at least
@@ -39,9 +46,11 @@ end
 # 2, 4, 8, 16) and the others have fewer than five factors. Consider writing a
 # helper method num_factors
 def at_least_n_factors(numbers, n)
+  numbers.select{|num| num_factors(num) >= n}
 end
 
 def num_factors(number)
+  (1..number).count{|div| number % div == 0}
 end
 
 # HARD
