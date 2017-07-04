@@ -3,22 +3,26 @@
 # Define a method that returns an array of only the even numbers in its argument
 # (an array of integers).
 def get_evens(arr)
+  arr.select(&:even?)
 end
 
 # Define a method that returns a new array of all the elements in its argument
 # doubled. This method should *not* modify the original array.
 def calculate_doubles(arr)
+  arr.map{|num| num * 2}
 end
 
 # Define a method that returns its argument with all the argument's elements
 # doubled. This method should modify the original array.
 def calculate_doubles!(arr)
+  arr.map!{|num| num * 2}
 end
 
 # Define a method that returns the sum of each element in its argument
 # multiplied by its index. array_sum_with_index([2, 9, 7]) => 23 because (2 * 0) +
 # (9 * 1) + (7 * 2) = 0 + 9 + 14 = 23
 def array_sum_with_index(arr)
+  arr.map.with_index{|el, idx| el * idx }.reduce(0,:+)
 end
 
 # MEDIUM
