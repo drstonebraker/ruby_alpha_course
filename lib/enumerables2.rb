@@ -32,15 +32,18 @@ end
 # Define a method that takes a string of lower-case letters and returns an array
 # of all the letters that do not occur in the method's argument.
 def missing_letters(string)
+  ('a'..'z').reject{|ch| string.include?(ch)}
 end
 
 # Define a method that accepts two years and returns an array of the years
 # within that range (inclusive) that have no repeated digits. Hint: helper
 # method?
 def no_repeat_years(first_yr, last_yr)
+  (first_yr..last_yr).select{|yr| not_repeat_year?(yr)}
 end
 
 def not_repeat_year?(year)
+  (year.to_s =~ /(\d).*\1/).nil?
 end
 
 # HARD
