@@ -56,9 +56,11 @@ end
 # appear multiple times in a row and remove them. You may wish to write a helper
 # method no_repeats?
 def one_week_wonders(songs)
+  songs.select{|song| no_repeats?(song, songs)}.uniq
 end
 
 def no_repeats?(song_name, songs)
+  songs.each_cons(2).none? {|(first, last)| first == last && song_name == first}
 end
 
 # Define a method that, given a string of words, returns the word that has the
@@ -67,9 +69,11 @@ end
 # wish to write the helper methods c_distance and remove_punctuation.
 
 def for_cs_sake(string)
+  string.scan(/\w*c\w*/).sort_by {|word| c_distance(word)}.first.to_s
 end
 
 def c_distance(word)
+  word.length - word.rindex('c')
 end
 
 # Define a method that, given an array of numbers, returns a nested array of
@@ -78,4 +82,13 @@ end
 # [[0, 1]] repeated_number_ranges([1, 2, 3, 3, 4, 4, 4]) => [[2, 3], [4, 6]]
 
 def repeated_number_ranges(arr)
+  result = []
+  arr.each_with_index do |el,idx|
+    next if result.last && idx <= result.last.last
+    length = arr[idx..-1].take_while{|el2| el2 == el}.length
+    if length > 1
+      result << [idx, idx + length - 1]
+    end
+  end
+  result
 end
