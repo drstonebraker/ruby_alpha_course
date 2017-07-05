@@ -59,9 +59,12 @@ end
 # words whose vowels appear in order. You may wish to write a helper method:
 # ordered_vowel_word?
 def ordered_vowel_words(words)
+  words.select{|word| ordered_vowel_word?(word)}
 end
 
 def ordered_vowel_word?(word)
+  vowels = word.chars.select{|ch| %w(a e i o u).include?(ch)}
+  vowels == vowels.sort
 end
 
 # Given an array of numbers, return an array of all the products remaining when
@@ -77,6 +80,8 @@ end
 # 10, because you take out 3, leaving 1 * 2 * 5 6, because you take out 5,
 # leaving 1 * 2 * 3
 def products_except_me(numbers)
+  product = numbers.reduce(:*).to_i
+  numbers.map{|num| product / num}
 end
 
 def array_product(array)
