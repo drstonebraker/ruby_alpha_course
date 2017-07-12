@@ -42,17 +42,32 @@ end
 # Define a method that, given an array, returns that array without duplicates.
 # Use a hash! Don't use the uniq method.
 def my_uniq(arr)
+  arr.map{|el| [el, true]}.to_h.keys
 end
 
 # Define a method that, given an array of numbers, returns a hash with "even"
 # and "odd" as keys and the frequency of each parity as values.
 def evens_and_odds(numbers)
+  result = Hash.new(0)
+  numbers.each do |num|
+    if num.even?
+      result[:even] += 1
+    else
+      result[:odd] += 1
+    end
+  end
+  result
 end
 
 # Define a method that, given a string, returns the most common vowel. If
 # there's a tie, return the vowel that occurs earlier in the alphabet. Assume
 # all letters are lower case.
 def most_common_vowel(string)
+  counts = Hash.new(0)
+  string.scan(/[aeiou]/).each do |vowel|
+    counts[vowel] += 1
+  end
+  counts.sort_by{|k,v| [-v, k]}.first.first
 end
 
 # HARD
