@@ -80,6 +80,10 @@ end
 # fall_and_winter_birthdays(students_with_birthdays) => [ ["Bertie", "Dottie"],
 # ["Bertie", "Warren"], ["Dottie", "Warren"] ]
 def fall_and_winter_birthdays(students)
+  students.select {|k,v| v.between?(7,12)}
+    .map {|(k,v)| k}
+    .combination(2)
+    .to_a
 end
 
 # Define a method that, given an array of specimens, returns the biodiversity
@@ -88,6 +92,13 @@ end
 # "cat", "cat"]) => 1 biodiversity_index(["cat", "leopard-spotted ferret",
 # "dog"]) => 9
 def biodiversity_index(specimens)
+  specimen_count = Hash.new(0)
+  specimens.each{|specimen| specimen_count[specimen] += 1}
+  number_of_species = specimen_count.length
+  smallest_population_size = specimen_count.min_by{|k,v| v}.last
+  largest_population_size = specimen_count.max_by{|k,v| v}.last
+
+  number_of_species**2 * smallest_population_size / largest_population_size
 end
 
 # Define a method that, given the string of a respectable business sign, returns
@@ -96,7 +107,16 @@ end
 # can_tweak_sign("We're having a yellow ferret sale for a good cause over at the
 # pet shop!", "Leopard ferrets forever yo") => true
 def can_tweak_sign?(normal_sign, vandalized_sign)
+  normal_sign = normal_sign.dup.downcase
+  vandalized_sign = vandalized_sign.dup.downcase
+
+  character_count(vandalized_sign).all? do |k,v|
+    v <= character_count(normal_sign)[k]
+  end
 end
 
 def character_count(str)
+  count = Hash.new(0)
+  str.chars.each{|ch| count[ch] += 1}
+  count
 end
