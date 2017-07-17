@@ -1,3 +1,4 @@
+require 'byebug'
 # ### Factors
 #
 # Write a method `factors(num)` that returns an array containing all the
@@ -94,9 +95,18 @@ end
 # words).
 
 def substrings(string)
+  result = []
+  chars = string.chars
+  chars.length.downto(1) do |length|
+    chars.each_cons(length) do |subarr|
+      result << subarr.join
+    end
+  end
+  result.sort_by {|substr| [string.index(substr), chars.length]}
 end
 
 def subwords(word, dictionary)
+  dictionary.select{|substr| substrings(word).include?(substr)}
 end
 
 # ### Doubler
@@ -104,6 +114,7 @@ end
 # array with the original elements multiplied by two.
 
 def doubler(array)
+  array.map{|int| int * 2}
 end
 
 # ### My Each
