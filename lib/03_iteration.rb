@@ -4,6 +4,16 @@
 # factors of a given number.
 
 def factors(num)
+  sqrt = Math.sqrt(num).to_i
+  small_factors = []
+  big_factors = []
+  (1..sqrt).each do |divisor|
+    if num % divisor == 0
+      small_factors << divisor
+      big_factors.unshift(num / divisor) unless divisor**2 == num
+    end
+  end
+  small_factors + big_factors
 end
 
 # ### Bubble Sort
@@ -46,10 +56,27 @@ end
 # http://stackoverflow.com/questions/827649/what-is-the-ruby-spaceship-operator
 
 class Array
-  def bubble_sort!
+  def bubble_sort!(&prc)
+    prc ||= Proc.new {|a,b| a <=> b}
+    swapped = true
+
+    while swapped
+      i = 0
+      swapped = false
+
+      while i < self.length.pred
+        if prc.call(self[i], self[i.next]) == 1
+          self[i], self[i.next] = self[i.next], self[i]
+          swapped = true
+        end
+        i += 1
+      end
+    end
+    self
   end
 
   def bubble_sort(&prc)
+    self.dup.bubble_sort!(&prc)
   end
 end
 
