@@ -166,12 +166,22 @@ end
 
 class Array
   def my_map(&prc)
+    result = []
+    self.my_each {|el| result << prc.call(el)}
+    result
   end
 
   def my_select(&prc)
+    result = []
+    self.my_each {|el| result << el if prc.call(el)}
+    result
   end
 
   def my_inject(&blk)
+    dup = self.dup
+    result = dup.shift
+    dup.my_each {|el| result = blk.call(result, el)}
+    result
   end
 end
 
@@ -185,4 +195,5 @@ end
 # ```
 
 def concatenate(strings)
+  strings.inject{|mem, str| mem + str}
 end
