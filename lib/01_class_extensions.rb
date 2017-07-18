@@ -19,7 +19,11 @@
 class String
   def caesar(shift)
     self.chars.map do |ch|
-      (((ch.ord - 97 + shift) % 26) + 97).chr
+      if ch == ch.downcase
+        (((ch.ord - 97 + shift) % 26) + 97).chr
+      else
+        (((ch.ord - 65 + shift) % 26) + 65).chr
+      end
     end.join
   end
 end
