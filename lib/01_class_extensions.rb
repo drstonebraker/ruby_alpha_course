@@ -39,6 +39,9 @@ end
 
 class Hash
   def difference(other_hash)
+    uniq_a = self.reject{|k,v| other_hash[k]}
+    uniq_b = other_hash.reject{|k,v| self[k]}
+    uniq_a.merge(uniq_b)
   end
 end
 
