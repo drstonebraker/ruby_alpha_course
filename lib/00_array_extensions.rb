@@ -5,6 +5,7 @@
 
 class Array
   def sum
+    self.inject(0, :+)
   end
 end
 
@@ -16,9 +17,11 @@ end
 
 class Array
   def square!
+    self.map!{|el| el**2}
   end
 
   def square
+    self.map{|el| el**2}
   end
 end
 
@@ -36,6 +39,7 @@ end
 
 class Array
   def my_uniq
+    self.map{|el| [el, nil]}.to_h.keys
   end
 end
 
