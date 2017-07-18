@@ -18,6 +18,9 @@
 
 class String
   def caesar(shift)
+    self.chars.map do |ch|
+      (((ch.ord - 97 + shift) % 26) + 97).chr
+    end.join
   end
 end
 
