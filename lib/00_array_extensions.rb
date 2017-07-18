@@ -141,6 +141,16 @@ end
 
 class Array
   def my_transpose
+    result = []
+    copy = self.dup.map(&:dup)
+    until copy.last.empty?
+      new_row = []
+      copy.each do |old_row|
+        new_row << old_row.shift
+      end
+      result << new_row
+    end
+    result
   end
 end
 
