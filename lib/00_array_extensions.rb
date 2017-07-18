@@ -61,6 +61,13 @@ end
 
 class Array
   def two_sum
+    result = []
+    self.each_with_index do |el, i|
+      (i.next...self.length).each do |j|
+        result << [i, j] if (el + self[j]).zero?
+      end
+    end
+    result
   end
 end
 
