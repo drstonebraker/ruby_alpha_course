@@ -1,70 +1,60 @@
 class RPNCalculator
   def initialize
-    @expression = []
+    @stack = []
   end
 
-  def push(num)
-    @expression << num
+  def push(val)
+    @stack << val.to_f
   end
 
-  def empty_stack_error
-    raise Exception, "calculator is empty"
+  def value
+    @stack.last
   end
 
-  def add_operator(operator)
-    empty_stack_error unless @expression.size >= 2
-    @expression << operator
+  def test_length
+    raise Exception, "calculator is empty" if @stack.length <= 1
+  end
+
+  def operate(operator)
+    test_length
+    @stack[-2..-1] = @stack.last(2).inject(operator)
   end
 
   def plus
-     add_operator "+"
+    operate(:+)
   end
 
   def minus
-    add_operator '-'
+    operate(:-)
   end
 
   def times
-    add_operator '*'
+    operate(:*)
   end
 
   def divide
-    add_operator '/'
+    operate(:/)
   end
 
-  def tokens(expression)
-    expression.split.map do |e|
-    if e =~ /\d/
-      e.to_i
-    else
-      e.to_sym
-    end
-    end
-  end
-
-  def value(expression=@expression) #evaluates all available operators with changing @expression
-    expression = tokens(expression) if expression.is_a? String # ensure expression is in array/token form
-    @stack = []
-    expression.each do |e|
-      if ['+', '-', '*', '/', :+, :-, :*, :/].include? e && @stack[-2].nil? #ensure there are sufficient operands
-       empty_stack_error
-      end
-      case e
-        when Numeric then @stack << e
-        when "+", :+ then @stack << @stack.pop + @stack.pop
-        when "-", :- then @stack << -(@stack.pop - @stack.pop)
-        when "*", :* then @stack << @stack.pop * @stack.pop
-        when "/", :/ then @stack << (1/(@stack.pop.to_f / @stack.pop))
+  def tokens(token_string)
+    token_string.split.map do |char_s|
+      if char_s =~ /[0-9]/
+        char_s.to_i
+      else
+        char_s.to_sym
       end
     end
-    @stack.last
   end
 
-  def evaluate(expression=@expression) # evaluates current or provided expression, resets @expression
-    value(expression)
-    raise Exception, "invalid expression, too many operands for number of operators" if @stack.size > 1
-    @expression = []
-    @stack.last
+  def evaluate(token_string)
+    stack = RPNCalculator.new
+    tokens(token_string).each do |token|
+      case token
+        when Fixnum then stack.push(token)
+        when Symbol then stack.operate(token)
+      end
+    end
+    stack.value
   end
 end
 
