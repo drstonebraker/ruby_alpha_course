@@ -40,5 +40,160 @@
 # methods named above.
 
 class TowersOfHanoi
+  attr_reader :towers
+  @@wrong_move_msg = [
+    "You can't put that there!  Try again.",
+    "It's not fitting there.  Try again.",
+    'That move is no good.  Try again.'
+  ]
+  @@platform_index = {
+    'a' => 0,
+    'b' => 1,
+    'c' => 2
+  }
 
+  def initialize
+    @towers = [[3,2,1],[],[]]
+    @moves_counter = 0
+  end
+
+  def play
+    puts ''
+    puts '**TOWERS OF HANOI**'
+    puts 'Type "help" at any time for instructions, "retry" to start over, or "quit" to forfeit the challenge'
+
+    get_difficulty
+    render
+
+    until end_game?
+      move_from = get_from_move
+      move_to = get_to_move(move_from)
+      move(move_from, move_to)
+    end
+
+
+  end
+
+  # private
+
+  def get_difficulty
+    loop do
+      puts ''
+      puts 'Choose a difficulty level (1-5)' # determines height of tower
+      difficulty = gets.chomp.downcase
+
+      case difficulty
+      when (1..5)
+        setup_towers(difficulty.to_i)
+        return difficulty.to_i
+      when Numeric
+        puts 'That is not a valid choice'
+      else
+        execute_command(difficulty)
+      end
+
+    end
+  end
+
+  def setup_towers(difficulty)
+    difficulty += 2
+    @towers = [(difficulty.downto(1)).to_a, [], []]
+  end
+
+  def execute_command(cmd)
+    case cmd
+    when 'help'
+      help
+    when 'quit'
+      quit
+    when 'retry'
+      # retry
+    else
+      puts 'That is not a valid input. Please try again'
+    end
+  end
+
+  def help # for when player types 'help'
+    puts "-The object of the game is to move the entire tower from platform A to platform C."
+    puts "-The tower is made up of multiple segments of different sizes,"\
+    " ranging from smallest at the top to largest at the base."
+    puts "-You must move the entire tower only one segment at a time."
+    puts "-Each turn, you must remove the topmost tower segment"\
+    " from one platform and place it on another platform."
+    puts "-You may choose either of the other two platoforms to place the new segment,"\
+    " but it will always go on top of any other segments that already exist at that platform."
+    puts "-There is, however, one more rule:"
+    puts "-A segment may never be placed on top of another segment that is smaller than it."\
+    " Segments must be moved either to empty platforms or on top or larger segments."
+    puts ""
+    puts "-Once you have moved the entire tower to platform C, you have won the challenge!"
+    puts ""
+  end
+
+  def render
+    i = @towers.map(&:count).max
+
+    puts ''
+
+    while i >= 0 #iterate through each printed row (highest to lowest) to create towers
+      #set this row's segment value for each platform
+      a_segment = @towers[0][i] == nil ? ' ' : @towers[0][i]
+      b_segment = @towers[1][i] == nil ? ' ' : @towers[1][i]
+      c_segment = @towers[2][i] == nil ? ' ' : @towers[2][i]
+      #print the segments in each tower at this given index/row
+      puts "  #{a_segment}      #{b_segment}      #{c_segment}"
+      i -= 1
+    end
+
+    puts "-----  -----  -----"
+    puts "  A      B      C"
+    puts ""
+  end
+
+  def get_from_move
+    loop do
+      puts "Choose a platform to remove. 'A', 'B', or 'C'"
+      move_from = gets.chomp.downcase
+
+      if @towers[@@platform_index[move_from]].empty?
+        puts 'There is nothing on that platform! Please try again.'
+        puts ''
+        redo
+      end
+
+      if %w(a b c).include?(move_from)
+        return @@platform_index[move_from]
+      else
+        execute_command(move_from)
+      end
+    end
+  end
+
+  def get_to_move(move_from)
+    removed_seg = @towers[move_from].last
+    loop do
+      puts "Choose a platform to place this '#{removed_seg}' segment. 'A', 'B', or 'C'"
+      move_to = gets.chomp.downcase
+      unless valid_move?(move_from, @@platform_index[move_to])
+        puts @@wrong_move_msg.sample
+        puts ''
+        redo
+      end
+
+      if %w(a b c).include?(move_to)
+        return @@platform_index[move_to]
+      else
+        execute_command(move_to)
+      end
+    end
+  end
+
+  def move(move_from, move_to)
+    @towers[move_to] << @towers[move_from].pop
+  end
+
+  def valid_move?(move_from, move_to)
+    return false if @towers[move_from].empty?
+    @towers[move_to].empty? || @towers[move_from].last < @towers[move_to].last
+  end
 end
