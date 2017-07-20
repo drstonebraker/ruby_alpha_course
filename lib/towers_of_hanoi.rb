@@ -64,12 +64,14 @@ class TowersOfHanoi
 
     difficulty = get_difficulty
 
+    render
+
     until won?
-      render
       move_from = get_from_move
       move_to = get_to_move(move_from)
       move(move_from, move_to)
       @moves_counter += 1
+      render
     end
 
     puts "Congratulations!  You successfully completed the challenge, Towers of Hanoi,"\
@@ -111,12 +113,12 @@ class TowersOfHanoi
     case cmd
     when 'help'
       help
-    when 'quit'
+    when 'quit', 'exit'
       quit
     when 'retry'
       # retry
     else
-      puts 'That is not a valid input. Please try again'
+      puts 'That is not a valid input. Please try again.'
     end
   end
 
@@ -162,7 +164,7 @@ class TowersOfHanoi
       puts "Choose a platform to remove. 'A', 'B', or 'C'"
       move_from = gets.chomp.downcase
 
-      if @towers[@@platform_index[move_from]]&.empty?
+      if @@platform_index[move_from] && @towers[@@platform_index[move_from]]&.empty?
         puts 'There is nothing on that platform! Please try again.'
         puts ''
         redo
@@ -205,6 +207,6 @@ class TowersOfHanoi
   end
 
   def won?
-    @towers[1,2].include?([3,2,1])
+    @towers.count([]) == 2 && @towers.first.empty?
   end
 end
