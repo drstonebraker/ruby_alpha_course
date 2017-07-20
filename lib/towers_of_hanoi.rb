@@ -60,15 +60,15 @@ class TowersOfHanoi
   def play
     puts ''
     puts '**TOWERS OF HANOI**'
-    puts 'Type "help" at any time for instructions, "retry" to start over, or "quit" to forfeit the challenge'
+    puts 'Type "help" at any time for instructions or "quit" to forfeit the challenge'
 
-    difficulty = get_difficulty
+    return false unless (difficulty = get_difficulty)
 
     render
 
     until won?
-      move_from = get_from_move
-      move_to = get_to_move(move_from)
+      return false unless (move_from = get_from_move)
+      return false unless (move_to = get_to_move(move_from))
       move(move_from, move_to)
       @moves_counter += 1
       render
@@ -98,7 +98,7 @@ class TowersOfHanoi
         setup_towers(difficulty.to_i)
         return difficulty.to_i
       else
-        execute_command(difficulty)
+        return false unless execute_command(difficulty)
       end
 
     end
@@ -114,12 +114,11 @@ class TowersOfHanoi
     when 'help'
       help
     when 'quit', 'exit'
-      quit
-    when 'retry'
-      # retry
+      return false
     else
       puts 'That is not a valid input. Please try again.'
     end
+    true
   end
 
   def help # for when player types 'help'
@@ -164,16 +163,16 @@ class TowersOfHanoi
       puts "Choose a platform to remove. 'A', 'B', or 'C'"
       move_from = gets.chomp.downcase
 
-      if @@platform_index[move_from] && @towers[@@platform_index[move_from]]&.empty?
-        puts 'There is nothing on that platform! Please try again.'
-        puts ''
-        redo
-      end
-
       if %w(a b c).include?(move_from)
+        if @towers[@@platform_index[move_from]].empty?
+          puts 'There is nothing on that platform! Please try again.'
+          puts ''
+          redo
+        end
+
         return @@platform_index[move_from]
       else
-        execute_command(move_from)
+        return false unless execute_command(move_from)
       end
     end
   end
@@ -183,16 +182,17 @@ class TowersOfHanoi
     loop do
       puts "Choose a platform to place this '#{removed_seg}' segment. 'A', 'B', or 'C'"
       move_to = gets.chomp.downcase
-      unless valid_move?(move_from, @@platform_index[move_to])
-        puts @@wrong_move_msg.sample
-        puts ''
-        redo
-      end
 
       if %w(a b c).include?(move_to)
+        unless valid_move?(move_from, @@platform_index[move_to])
+          puts @@wrong_move_msg.sample
+          puts ''
+          redo
+        end
+
         return @@platform_index[move_to]
       else
-        execute_command(move_to)
+        return false unless execute_command(move_to)
       end
     end
   end
