@@ -62,16 +62,25 @@ class TowersOfHanoi
     puts '**TOWERS OF HANOI**'
     puts 'Type "help" at any time for instructions, "retry" to start over, or "quit" to forfeit the challenge'
 
-    get_difficulty
-    render
+    difficulty = get_difficulty
 
-    until end_game?
+    until won?
+      render
       move_from = get_from_move
       move_to = get_to_move(move_from)
       move(move_from, move_to)
+      @moves_counter += 1
     end
 
+    puts "Congratulations!  You successfully completed the challenge, Towers of Hanoi,"\
+        " in only #{@moves_counter} moves!"
 
+    if @moves_counter == 6 * (2**(difficulty - 1)) + 2**difficulty - 1 #formula for determining fewest possible moves
+      puts "That's the fewest possible moves (not counting invalid ones) to beat this difficulty level!"
+    else
+      puts "Try again to see if you can do it in even fewer moves!"
+    end
+    return true
   end
 
   # private
@@ -83,11 +92,9 @@ class TowersOfHanoi
       difficulty = gets.chomp.downcase
 
       case difficulty
-      when (1..5)
+      when ('1'..'5')
         setup_towers(difficulty.to_i)
         return difficulty.to_i
-      when Numeric
-        puts 'That is not a valid choice'
       else
         execute_command(difficulty)
       end
@@ -155,7 +162,7 @@ class TowersOfHanoi
       puts "Choose a platform to remove. 'A', 'B', or 'C'"
       move_from = gets.chomp.downcase
 
-      if @towers[@@platform_index[move_from]].empty?
+      if @towers[@@platform_index[move_from]]&.empty?
         puts 'There is nothing on that platform! Please try again.'
         puts ''
         redo
@@ -193,7 +200,11 @@ class TowersOfHanoi
   end
 
   def valid_move?(move_from, move_to)
-    return false if @towers[move_from].empty?
-    @towers[move_to].empty? || @towers[move_from].last < @towers[move_to].last
+    return false if @towers[move_from].empty? || move_to.nil?
+    @towers[move_to].empty? || @towers[move_from].last <= @towers[move_to].last
+  end
+
+  def won?
+    @towers[1,2].include?([3,2,1])
   end
 end
