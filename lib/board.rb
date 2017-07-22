@@ -20,4 +20,8 @@ class Board
   end
 
   alias :place_mark :[]=
+
+  def empty?(pos)
+    self[pos].nil?
+  end
 end
