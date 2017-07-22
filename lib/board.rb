@@ -30,6 +30,11 @@ class Board
     return :O if winner?(:O)
     nil
   end
+
+  def over?
+    winner || full?
+  end
+
   private
 
   def winner?(mark)
@@ -39,5 +44,9 @@ class Board
     d1_winner = [self[[0,0]], self[[1,1]], self[[2,2]]].all? {|space| space == mark }
     d2_winner = [self[[0,2]], self[[1,1]], self[[2,0]]].all? {|space| space == mark }
     row_winner || col_winner || d1_winner || d2_winner
+  end
+
+  def full?
+    @grid.none? {|row| row.any?(&:nil?) }
   end
 end
