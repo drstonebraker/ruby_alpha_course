@@ -17,6 +17,7 @@ class Game
 
   def play_turn
     @current_player.display(board)
-    board.place_mark(@current_player.get_move)
+    board.place_mark(@current_player.get_move, @current_player.mark)
+    switch_players!
   end
 end
