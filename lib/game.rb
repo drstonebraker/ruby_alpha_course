@@ -3,7 +3,7 @@ require_relative 'human_player'
 require_relative 'computer_player'
 
 class Game
-  attr_reader :board
+  attr_reader :board, :current_player
 
   def initialize(player1, player2)
     @players = [player1, player2].cycle
