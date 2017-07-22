@@ -1,5 +1,5 @@
 class Board
-  attr_reader :grid
+  attr_reader :grid, :trios
 
   def initialize(grid=nil)
     @grid = grid || [
@@ -7,6 +7,16 @@ class Board
       [nil,nil,nil],
       [nil,nil,nil]
     ]
+    @trios = {
+      r0: [[0,0],[0,1],[0,2]],
+      r1: [[1,0],[1,1],[1,2]],
+      r2: [[2,0],[2,1],[2,2]],
+      c0: [[0,0],[1,0],[2,0]],
+      c1: [[0,1],[1,1],[2,1]],
+      c2: [[0,2],[1,2],[2,2]],
+      d0: [[0,0],[1,1],[2,2]],
+      d1: [[0,2],[1,1],[2,0]]
+    }
   end
 
   def [](pos)
@@ -35,6 +45,26 @@ class Board
     winner || full?
   end
 
+  def winning_move?(pos, mark)
+    winning_moves(mark).include?(pos)
+  end
+
+  def winning_moves(mark)
+    winning_trios = trios.select do |k, positions|
+      trio = positions.map{|pos| grid.dig(*pos)}
+      trio.count(mark) == 2 && trio.count(nil) == 1
+    end
+    winning_trios.values.map do |positions|
+      positions.find {|pos| grid.dig(*pos).nil?}
+    end
+  end
+
+  def available_moves
+    trios.values.flatten(1).uniq.select do |pos|
+      self[pos].nil?
+    end
+  end
+
   private
 
   def winner?(mark)
@@ -49,4 +79,6 @@ class Board
   def full?
     @grid.none? {|row| row.any?(&:nil?) }
   end
+
+
 end
