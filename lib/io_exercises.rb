@@ -33,3 +33,21 @@ def guessing_game
   puts "#{guess} is the right number! (Guess #{guess_count})"
   true
 end
+
+def file_shuffler
+  puts 'Please type the name of a txt file to shuffle:'
+  user_filename = gets.chomp
+
+  lines = File.readlines(user_filename).shuffle
+
+  new_filename = user_filename.sub(/\.txt$/, '-shuffled.txt')
+  new_file = File.open(new_filename, 'w') do |file|
+    lines.each {|line| file.puts(line)}
+  end
+  puts "File shuffled and saved as #{new_filename}"
+  new_file
+end
+
+if __FILE__ == $0
+  file_shuffler
+end
