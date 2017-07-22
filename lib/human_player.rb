@@ -10,4 +10,12 @@ class HumanPlayer
     puts "Format should be e.g. '0, 0' for top left corner."
     gets.chomp.split(/\,\s*/).map(&:to_i)
   end
+
+  def display(board)
+    lines = board.grid.flat_map do |row|
+      row_display = "%s|%s|%s" % row.map {|el| el || ' ' }
+      [row_display, '-----']
+    end
+    lines[0..-1].each {|line| puts line }
+  end
 end
