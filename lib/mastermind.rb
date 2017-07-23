@@ -1,4 +1,3 @@
-require 'byebug'
 class Code
   attr_reader :pegs
   PEGS = {
@@ -68,15 +67,16 @@ class Game
   end
 
   def get_guess
-    puts "Try to guess the secret code"
+    puts "Try to guess the secret code."
+    puts "Valid colors are #{Code::PEGS.keys.join(', ').upcase}"
     guess = $stdin.gets.chomp
     Code.parse(guess)
   end
 
   def display_matches(code=@guess)
     puts "Your guess includes:"
-    puts "#{code.exact_matches(code)} exact matches."
-    puts "#{code.near_matches(code)} near matches."
+    puts "#{secret_code.exact_matches(code)} exact matches."
+    puts "#{secret_code.near_matches(code)} near matches."
   end
 
   def play
