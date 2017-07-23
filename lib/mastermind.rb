@@ -1,3 +1,4 @@
+require 'byebug'
 class Code
   attr_reader :pegs
   PEGS = {
@@ -59,4 +60,41 @@ end
 
 class Game
   attr_reader :secret_code
+
+  def initialize(code=nil)
+    @secret_code = code || Code.random
+    @turn_count = 10
+    @guess = nil
+  end
+
+  def get_guess
+    puts "Try to guess the secret code"
+    guess = $stdin.gets.chomp
+    Code.parse(guess)
+  end
+
+  def display_matches(code=@guess)
+    puts "Your guess includes:"
+    puts "#{code.exact_matches(code)} exact matches."
+    puts "#{code.near_matches(code)} near matches."
+  end
+
+  def play
+    result = nil
+
+    until result = over?
+      puts "You have #{@turn_count} guesses remaining."
+      @guess = get_guess
+      display_matches(@guess)
+      @turn_count -= 1
+    end
+
+    puts result
+  end
+
+  def over?
+    return "You won with #{@turn_count} turns left!" if @guess == secret_code
+    return "You ran out of turns. The secret code is #{secret_code.pegs}." if @turn_count.zero?
+    false
+  end
 end
