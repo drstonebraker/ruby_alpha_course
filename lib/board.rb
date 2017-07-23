@@ -77,7 +77,7 @@ class Board
   end
 
   def full?
-    @grid.none? {|row| row.any?(&:nil?) }
+    @grid.none? {|row| row.any?(&:nil?) } && 'Game Over'
   end
 
 

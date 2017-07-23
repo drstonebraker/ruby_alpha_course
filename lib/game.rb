@@ -19,17 +19,27 @@ class Game
 
   def play_turn
     puts "#{current_player.name}'s turn."
-    p board
     @current_player.display(board)
-    p move = @current_player.get_move
+    move = @current_player.get_move
     @board.place_mark(move, @current_player.mark)
     switch_players!
-    p board
   end
 
   def play
-    until board.over?
+    result = nil
+    until (result = board.over?)
       play_turn
+    end
+    end_game_msg(result)
+  end
+
+  private
+
+  def end_game_msg(result)
+    if result == 'Game Over'
+      puts "It's a tie!"
+    else
+      puts "#{@players.next.name} wins!"
     end
   end
 end
