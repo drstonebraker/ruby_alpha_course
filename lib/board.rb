@@ -8,4 +8,18 @@ class Board
   def initialize(grid=Board.default_grid)
     @grid = grid
   end
+
+  def count
+    grid.inject(0) do |memo, row|
+      memo + row.count(:s)
+    end
+  end
+
+  def empty?(pos=nil)
+    if pos
+      grid.dig(*pos).nil?
+    else
+      count.zero?
+    end
+  end
 end
