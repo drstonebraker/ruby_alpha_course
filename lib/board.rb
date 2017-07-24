@@ -39,7 +39,7 @@ class Board
 
   def place_ship(pos=nil)
     if pos
-      grid[pos.first][pos.last] = :s
+      self[pos] = :s
     else
       random_ship
     end
@@ -48,5 +48,19 @@ class Board
 
   def won?
     empty?
+  end
+
+  def place_mark(pos)
+    self[pos] = :x
+  end
+
+  def [](pos)
+    row, col = pos
+    grid[row][col]
+  end
+
+  def []=(pos, sym)
+    row, col = pos
+    grid[row][col] = sym
   end
 end
