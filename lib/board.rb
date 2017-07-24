@@ -26,4 +26,27 @@ class Board
   def full?
     count == grid.inject(0) {|memo, row| memo + row.size}
   end
+
+  def place_random_ship
+    empty_positions = grid.flat_map.with_index do |row, row_idx|
+      row.map.with_index do |space, space_idx|
+        space.nil? ? [row_idx, space_idx] : nil
+      end
+    end
+    empty_positions.compact!
+    place_ship(empty_positions.sample)
+  end
+
+  def place_ship(pos=nil)
+    if pos
+      grid[pos.first][pos.last] = :s
+    else
+      random_ship
+    end
+    self
+  end
+
+  def won?
+    empty?
+  end
 end
