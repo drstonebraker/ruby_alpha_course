@@ -22,4 +22,8 @@ class Board
       count.zero?
     end
   end
+
+  def full?
+    count == grid.inject(0) {|memo, row| memo + row.size}
+  end
 end
