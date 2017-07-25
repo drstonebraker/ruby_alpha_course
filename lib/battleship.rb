@@ -8,7 +8,10 @@ class BattleshipGame
 
   def attack(pos)
     board[pos] = :x
+    hit_or_miss_msg(pos)
+  end
 
+  def hit_or_miss_msg(pos)
     if board[pos].nil?
       puts miss_msg
     elsif board[pos] == :s
@@ -24,5 +27,9 @@ class BattleshipGame
 
   def hit_msg
     "It's a hit!"
+  end
+
+  def count
+    board.count
   end
 end
