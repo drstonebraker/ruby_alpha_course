@@ -1,3 +1,4 @@
+require 'byebug'
 class Board
   attr_reader :grid
 
@@ -60,6 +61,7 @@ class Board
   end
 
   def []=(pos, sym)
+    debugger
     row, col = pos
     grid[row][col] = sym
   end
