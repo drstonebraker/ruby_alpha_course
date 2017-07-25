@@ -61,7 +61,7 @@ class Board
   end
 
   def []=(pos, sym)
-    debugger
+    # debugger
     row, col = pos
     grid[row][col] = sym
   end

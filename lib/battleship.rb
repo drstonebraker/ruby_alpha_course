@@ -6,7 +6,7 @@ class BattleshipGame
     @board = board
   end
 
-  def attack(*pos)
+  def attack(pos)
     board[pos] = :x
 
     if board[pos].nil?
