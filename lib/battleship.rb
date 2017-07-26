@@ -1,15 +1,18 @@
+require_relative 'board'
+require_relative 'player'
+
 class BattleshipGame
   attr_reader :board, :player
 
-  def initialize(player, board)
+  def initialize(player=HumanPlayer.new, board=Board.new)
     @player = player
     @board = board
     @turn_count = 0
   end
 
   def attack(pos)
-    board[pos] = :x
     hit_or_miss_msg(pos)
+    board[pos] = :x
   end
 
   def hit_or_miss_msg(pos)
@@ -48,6 +51,7 @@ class BattleshipGame
     board.place_random_ship(10)
 
     play_turn until game_over?
+    puts win_msg
   end
 
   def win_msg

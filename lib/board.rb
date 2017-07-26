@@ -34,7 +34,7 @@ class Board
       end
     end
     empty_positions.compact!
-    place_ship(empty_positions.sample(qty))
+    empty_positions.sample(qty).each {|pos| place_ship(pos)}
   end
 
   def place_ship(pos=nil)
