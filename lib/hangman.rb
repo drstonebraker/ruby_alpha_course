@@ -16,7 +16,7 @@ class Hangman
     guess = guesser.guess
     matching_idxs = referee.check_guess(guess)
     update_board(matching_idxs, guess)
-    guesser.handle_response(board)
+    guesser.handle_response(guess, board)
   end
 
   def update_board(matching_idxs, guess)
@@ -53,8 +53,14 @@ class ComputerPlayer
     @word_length = word_length
   end
 
-  def handle_response(board)
-
+  def handle_response(guess, board)
+    @dictionary = @dictionary.reject do |word|
+      drop_word = false
+      board.each_with_index do |ch, idx|
+        drop_word = true if ch && ch != word[idx]
+      end
+      drop_word
+    end
   end
 
   def guess(board)
