@@ -33,6 +33,7 @@ end
 class ComputerPlayer
   def initialize(dictionary)
     @dictionary = dictionary
+    @guesses = []
   end
 
   def pick_secret_word
@@ -54,5 +55,9 @@ class ComputerPlayer
 
   def handle_response(board)
 
+  end
+
+  def guess(board)
+    ("a".."z").reject {|let| @guesses.include?(let)}.sample
   end
 end
