@@ -68,7 +68,11 @@ class ComputerPlayer
   end
 
   def guess(board)
-    ("a".."z").reject {|let| @guesses.include?(let)}.sample
+    available_chars = candidate_words.join.chars
+    available_chars.reject! do |ch|
+      @guesses.include?(ch) || board.include?(ch)
+    end
+    available_chars.max_by {|ch| available_chars.count(ch)}
   end
 
   def get_candidate_words
