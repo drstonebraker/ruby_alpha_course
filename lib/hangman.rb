@@ -1,3 +1,4 @@
+require 'byebug'
 class Hangman
   attr_reader :guesser, :referee, :board
 
@@ -16,7 +17,7 @@ class Hangman
     guess = guesser.guess
     matching_idxs = referee.check_guess(guess)
     update_board(matching_idxs, guess)
-    guesser.handle_response(guess, board)
+    guesser.handle_response(guess, matching_idxs)
   end
 
   def update_board(matching_idxs, guess)
@@ -44,8 +45,12 @@ class ComputerPlayer
   end
 
   def check_guess(guess)
+    get_matching_idxs(@secret_word, guess)
+  end
+
+  def get_matching_idxs(word, guess)
     matching_idxs = []
-    @secret_word.each_char.with_index do |ch, idx|
+    word.each_char.with_index do |ch, idx|
       matching_idxs << idx if guess == ch
     end
     matching_idxs
@@ -56,13 +61,9 @@ class ComputerPlayer
     @candidate_words = get_candidate_words
   end
 
-  def handle_response(guess, board)
+  def handle_response(guess, matching_idxs)
     @candidate_words = candidate_words.reject do |word|
-      drop_word = false
-      board.each_with_index do |ch, idx|
-        drop_word = true if ch && ch != word[idx]
-      end
-      drop_word
+      get_matching_idxs(word, guess) != matching_idxs
     end
   end
 
