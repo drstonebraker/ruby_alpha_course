@@ -161,6 +161,7 @@ class ComputerPlayer
   end
 
   def guess(board)
+    return 'e' if board.size > 4 && board.compact.empty?
     available_chars = candidate_words.join.chars
     available_chars.reject! do |ch|
       @guesses.include?(ch) || board.include?(ch)
