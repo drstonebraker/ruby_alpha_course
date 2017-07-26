@@ -31,6 +31,8 @@ class HumanPlayer
 end
 
 class ComputerPlayer
+  attr_accessor :candidate_words
+
   def initialize(dictionary)
     @dictionary = dictionary
     @guesses = []
@@ -51,10 +53,11 @@ class ComputerPlayer
 
   def register_secret_length(word_length)
     @word_length = word_length
+    @candidate_words = get_candidate_words
   end
 
   def handle_response(guess, board)
-    @dictionary = @dictionary.reject do |word|
+    @candidate_words = candidate_words.reject do |word|
       drop_word = false
       board.each_with_index do |ch, idx|
         drop_word = true if ch && ch != word[idx]
@@ -65,5 +68,9 @@ class ComputerPlayer
 
   def guess(board)
     ("a".."z").reject {|let| @guesses.include?(let)}.sample
+  end
+
+  def get_candidate_words
+    @dictionary.reject {|word| word.length != @word_length}
   end
 end
