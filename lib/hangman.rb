@@ -6,4 +6,7 @@ class HumanPlayer
 end
 
 class ComputerPlayer
+  def initialize(dictionary)
+    @dictionary = dictionary
+  end
 end
