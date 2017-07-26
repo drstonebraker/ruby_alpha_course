@@ -1,4 +1,3 @@
-require 'byebug'
 class Board
   attr_reader :grid
 
@@ -28,14 +27,14 @@ class Board
     count == grid.inject(0) {|memo, row| memo + row.size}
   end
 
-  def place_random_ship
+  def place_random_ship(qty=1)
     empty_positions = grid.flat_map.with_index do |row, row_idx|
       row.map.with_index do |space, space_idx|
         space.nil? ? [row_idx, space_idx] : nil
       end
     end
     empty_positions.compact!
-    place_ship(empty_positions.sample)
+    place_ship(empty_positions.sample(qty))
   end
 
   def place_ship(pos=nil)
@@ -61,8 +60,8 @@ class Board
   end
 
   def []=(pos, sym)
-    # debugger
     row, col = pos
     grid[row][col] = sym
   end
+
 end

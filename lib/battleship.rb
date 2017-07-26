@@ -4,6 +4,7 @@ class BattleshipGame
   def initialize(player, board)
     @player = player
     @board = board
+    @turn_count = 0
   end
 
   def attack(pos)
@@ -35,5 +36,21 @@ class BattleshipGame
 
   def game_over?
     board.won?
+  end
+
+  def play_turn
+    @turn_count += 1
+    pos = player.get_play
+    attack(pos)
+  end
+
+  def play
+    board.place_random_ship(10)
+
+    play_turn until game_over?
+  end
+
+  def win_msg
+    "You've sunk all the ships in #{@turn_count} turns!"
   end
 end
