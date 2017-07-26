@@ -4,7 +4,12 @@ class Hangman
   def initialize(players)
     @guesser = players[:guesser]
     @referee = players[:referee]
-    @board = Array.new(@referee.pick_secret_word)
+  end
+
+  def setup
+    word_length = referee.pick_secret_word
+    guesser.register_secret_length(word_length)
+    @board = Array.new(word_length){'_'}
   end
 end
 
@@ -27,5 +32,9 @@ class ComputerPlayer
       matching_idxs << idx if guess == ch
     end
     matching_idxs
+  end
+
+  def register_secret_length=(word_length)
+    @word_length = word_length
   end
 end
