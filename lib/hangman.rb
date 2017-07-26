@@ -1,5 +1,11 @@
 class Hangman
   attr_reader :guesser, :referee, :board
+
+  def initialize(players)
+    @guesser = players[:guesser]
+    @referee = players[:referee]
+    @board = Array.new(@referee.pick_secret_word)
+  end
 end
 
 class HumanPlayer
@@ -8,11 +14,10 @@ end
 class ComputerPlayer
   def initialize(dictionary)
     @dictionary = dictionary
-    @secret_word = @dictionary.sample
-    @guessing_board = Array.new(pick_secret_word)
   end
 
   def pick_secret_word
+    @secret_word = @dictionary.sample
     @secret_word.length
   end
 
