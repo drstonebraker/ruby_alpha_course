@@ -9,4 +9,9 @@ class ComputerPlayer
   def initialize(dictionary)
     @dictionary = dictionary
   end
+
+  def pick_secret_word
+    @secret_word = @dictionary.sample
+    @secret_word.length
+  end
 end
