@@ -48,7 +48,7 @@ class ComputerPlayer
     matching_idxs
   end
 
-  def register_secret_length=(word_length)
+  def register_secret_length(word_length)
     @word_length = word_length
   end
 
