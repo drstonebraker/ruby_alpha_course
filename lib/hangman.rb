@@ -9,7 +9,21 @@ class Hangman
   def setup
     word_length = referee.pick_secret_word
     guesser.register_secret_length(word_length)
-    @board = Array.new(word_length){'_'}
+    @board = Array.new(word_length)
+  end
+
+  def take_turn
+    guess = guesser.guess
+    matching_idxs = referee.check_guess(guess)
+    update_board(matching_idxs, guess)
+    guesser.handle_response(board)
+  end
+
+  def update_board(matching_idxs, guess)
+    matching_idxs.each do |match_idx|
+      board[match_idx] = guess
+    end
+    board
   end
 end
 
@@ -36,5 +50,9 @@ class ComputerPlayer
 
   def register_secret_length=(word_length)
     @word_length = word_length
+  end
+
+  def handle_response(board)
+
   end
 end
