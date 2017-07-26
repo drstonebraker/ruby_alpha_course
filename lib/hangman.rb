@@ -10,6 +10,7 @@ class Hangman
 
   def play
     setup
+    draw_hangman
     until result = game_over?
       take_turn
     end
@@ -25,9 +26,10 @@ class Hangman
   end
 
   def take_turn
-    guess = guesser.guess
+    guess = guesser.guess(board)
     matching_idxs = referee.check_guess(guess)
     update_board(matching_idxs, guess)
+    guess_msg(matching_idxs, guess)
     update_misses_left(matching_idxs)
     draw_hangman
     print_board
@@ -71,22 +73,29 @@ class Hangman
     puts "|#{' ' * 8}#{left_leg} #{right_leg}"
     puts "|"
     puts "|"
+    puts "^^^^^"
 
     puts "#{@misses_left} wrong guesses left"
   end
 
   def print_board
+    print "Secret word: "
     board.each do |space|
       print (space || '_')
     end
     puts "\n"
   end
 
+  def guess_msg(matching_idxs, guess)
+    puts "The secret word contains #{matching_idxs.length}" \
+      " occurences of #{guess}"
+  end
+
 end
 
 class HumanPlayer
 
-  def initialize(dictionary)
+  def initialize
     @guesses = []
   end
 
@@ -96,7 +105,7 @@ class HumanPlayer
 
   def guess(board)
     puts "Guess a letter:"
-    gets.chomp[0]
+    gets.chomp[0].downcase
   end
 
   def game_over_msg(result)
@@ -141,7 +150,7 @@ class ComputerPlayer
   attr_reader :candidate_words
 
   def initialize(dictionary=nil)
-    @dictionary = dictionary || File.readlines('dictionary.txt')
+    @dictionary = dictionary || File.readlines('./lib/dictionary.txt').map(&:chomp)
     @guesses = []
   end
 
@@ -183,6 +192,10 @@ class ComputerPlayer
   def register_secret_length(word_length)
     @word_length = word_length
     @candidate_words = get_candidate_words
+  end
+
+  def print_secret_word
+    puts @secret_word
   end
 
   private
