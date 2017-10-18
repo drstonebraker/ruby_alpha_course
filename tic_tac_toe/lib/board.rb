@@ -65,6 +65,10 @@ class Board
     end
   end
 
+  def copy
+    Board.new(grid)
+  end
+
   private
 
   def winner?(mark)
